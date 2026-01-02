@@ -2,8 +2,7 @@ name: CI
 
 on:
   push:
-    branches: ["main"]
-    branches: ["develop"]
+    branches: ["main", "develop"]
 
 jobs:
   build-and-scan:
