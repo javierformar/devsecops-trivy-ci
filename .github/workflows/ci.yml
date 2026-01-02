@@ -4,6 +4,10 @@ on:
   push:
     branches: ["master", "develop"]
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   build-and-scan:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
@@ -58,14 +62,17 @@ jobs:
           echo ${{ steps.semantic.outputs.new_release_minor_version }}
           echo ${{ steps.semantic.outputs.new_release_patch_version }}
 
-      - name: Backmerge release to develop
+      - name: Create backmerge PR to develop
         if: github.ref == 'refs/heads/master' && steps.semantic.outputs.new_release_published == 'true'
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout develop
-          git pull origin develop
-          git merge master --no-ff -m "chore: backmerge release v${{ steps.semantic.outputs.new_release_version }} to develop"
-          git push origin develop
+          if gh pr list --base develop --head master | grep -q .; then
+            echo "PR already exists"
+          else
+            gh pr create \
+              --base develop \
+              --head master \
+              --title "chore: backmerge release v${{ steps.semantic.outputs.new_release_version }} to develop" \
+              --body "Backmerge automático tras release v${{ steps.semantic.outputs.new_release_version }}.\n\nRevisar y aprobar manualmente."
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
