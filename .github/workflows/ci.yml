@@ -12,6 +12,12 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v4
 
+      - name: Run ls 
+        run: | 
+          ls -la 
+          pwd
+          ls -la apps/
+
       - name: Build Docker image
         run: docker build -t devsecops-demo:ci${{ github.sha }} -f apps/app.sh .
 
