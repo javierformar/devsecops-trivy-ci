@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/javierformar/devsecops-trivy-ci/compare/v1.0.1...v1.0.2) (2026-01-02)
+
+
+### Bug Fixes
+
+* pipeline fix ([5a52e71](https://github.com/javierformar/devsecops-trivy-ci/commit/5a52e71a6e4aad9561940b3433b18c40ce597c94))
+
 ## [1.0.1](https://github.com/javierformar/devsecops-trivy-ci/compare/v1.0.0...v1.0.1) (2026-01-02)
 
 
