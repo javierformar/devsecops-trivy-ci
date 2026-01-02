@@ -30,23 +30,27 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
 
-      # - uses: actions/setup-node@v3
-      #   with:
-      #     node-version: "lts/*"
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
 
       - name: Prepare prerelease semantic
         if: github.ref != 'refs/heads/master'
         run: mv .releaserc.prerelease.yaml .releaserc.yaml
 
+      - name: Install semantic-release plugins
+        run: |
+          npm install --no-save \
+            semantic-release \
+            @semantic-release/commit-analyzer \
+            @semantic-release/release-notes-generator \
+            @semantic-release/changelog \
+            @semantic-release/git \
+            @semantic-release/github
+
       - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v2
-        id: semantic # Need an `id` for output variables
-        with:
-          semantic_version: 17
-          extra_plugins: |
-            @semantic-release/changelog@5
-            @semantic-release/exec@5
-            @semantic-release/git@9
+        run: |
+          npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
