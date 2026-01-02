@@ -59,13 +59,13 @@ jobs:
           echo ${{ steps.semantic.outputs.new_release_patch_version }}
 
       - name: Backmerge release to develop
-        if: github.ref == 'refs/heads/main' && steps.semantic.outputs.new_release_published == 'true'
+        if: github.ref == 'refs/heads/master' && steps.semantic.outputs.new_release_published == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git checkout develop
           git pull origin develop
-          git merge main --no-ff -m "chore: backmerge release v${{ steps.semantic.outputs.new_release_version }} to develop"
+          git merge master --no-ff -m "chore: backmerge release v${{ steps.semantic.outputs.new_release_version }} to develop"
           git push origin develop
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
