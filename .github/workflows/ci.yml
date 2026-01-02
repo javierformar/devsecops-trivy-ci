@@ -50,7 +50,7 @@ jobs:
 
       - name: Semantic Release
         run: |
-          npx semantic-release
+          npx semantic-release --config .releasemc.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
