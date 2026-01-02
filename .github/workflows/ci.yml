@@ -6,11 +6,16 @@ on:
 
 jobs:
   build-and-scan:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+
     runs-on: ubuntu-latest
 
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Build Docker image
         run: docker build -t devsecops-demo:ci${{ github.sha }} -f docker/Dockerfile .
@@ -24,3 +29,32 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
+
+      - name: Prepare prerelease semantic
+        if: github.ref != 'refs/heads/master'
+        run: mv .releaserc.prerelease.yaml .releaserc.yaml
+
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v2
+        id: semantic # Need an `id` for output variables
+        with:
+          semantic_version: 17
+          extra_plugins: |
+            @semantic-release/changelog@5
+            @semantic-release/exec@5
+            @semantic-release/git@9
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Do something when a new release published
+        if: steps.semantic.outputs.new_release_published == 'true'
+        run: |
+          echo ${{ steps.semantic.outputs.new_release_version }}
+          echo ${{ steps.semantic.outputs.new_release_major_version }}
+          echo ${{ steps.semantic.outputs.new_release_minor_version }}
+          echo ${{ steps.semantic.outputs.new_release_patch_version }}
+
