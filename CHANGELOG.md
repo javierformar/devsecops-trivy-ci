@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/javierformar/devsecops-trivy-ci/compare/v1.1.0...v1.1.1) (2026-01-05)
+
+
+### Bug Fixes
+
+* testing PRs ([48b6a67](https://github.com/javierformar/devsecops-trivy-ci/commit/48b6a67d88e17180b92b15438cde7737dbe71aae))
+
 # [1.1.0](https://github.com/javierformar/devsecops-trivy-ci/compare/v1.0.4...v1.1.0) (2026-01-05)
 
 
