@@ -1,0 +1,1 @@
+Pipeline CI/CD con escaneo de seguridad (Trivy) para una aplicación containerizada, desplegada en Kubernetes local
