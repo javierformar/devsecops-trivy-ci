@@ -1,0 +1,22 @@
+replicaCount: 3
+
+namespace: devsecops
+
+image:
+  repository: devsecops-demo
+  tag: local
+  pullPolicy: IfNotPresent
+
+containerPort: 8080
+
+security:
+  runAsUser: 10001
+  runAsGroup: 10001
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi

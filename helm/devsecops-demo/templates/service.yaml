@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "devsecops-demo.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "devsecops-demo.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "devsecops-demo.selectorLabels" . | nindent 4 }}
+  ports:
+    - port: 80
+      targetPort: {{ .Values.containerPort }}
+      protocol: TCP
+      name: http
+
